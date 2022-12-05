@@ -17,22 +17,6 @@ struct Instruction {
 
 using instructions_t = std::vector<Instruction>;
 
-std::ostream& operator<<(std::ostream &out, const Instruction &i) {
-  out << "Move " << i.n << " from " << i.from << " to " << i.to;
-  return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const Stack &s) {
-  Stack t = s;
-  out << '<';
-  for (int i = 0; i < t.size(); ++i) {
-    out << t.top() << ' ';
-    t.pop();
-  }
-  out << '|';
-  return out;
-}
-
 stacks_t parse_header(const lines_t &h) {
   std::stringstream s;
   s << h.back();
@@ -92,7 +76,6 @@ int main() {
       from.pop();
     }
   }
-
 
   for (auto &stack : stacks) std::cout << stack.top();
   std::cout << std::endl;
