@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cstdio>
 #include <iostream>
 #include <list>
 #include <map>
@@ -124,15 +126,26 @@ int main() {
 
     std::cout << std::endl;
     root->ls();
+    std::cout << std::endl;
 
-    constexpr size_t threshold = 100000;
-    size_t total_size = 0;
+    constexpr size_t total_disk_size = 70000000;
+    constexpr size_t update_size = 30000000;
 
-    for (auto it = std::next(dirs.begin(), 1); it != dirs.end(); ++it) {
-        if (it->size() <= threshold) total_size += it->size();
+    dirs.sort([](const Directory &a, const Directory &b) { return a.size() < b.size(); });
+
+    size_t free_space = total_disk_size - root->size();
+    size_t required_space = update_size - free_space;
+
+    printf("Total disk space: %zu\n", total_disk_size);
+    printf("Free space: %zu\n", free_space);
+    printf("Required space: %zu\n", required_space);
+
+    for (auto &dir : dirs) {
+        if (dir.size() >= required_space) {
+            std::cout << "Directory: " << dir.abspath() << ", size: " << dir.size() << std::endl;
+            break;
+        }
     }
-
-    std::cout << "Total size: " << total_size << std::endl;
 
     return 0;
 }
